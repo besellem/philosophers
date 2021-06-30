@@ -6,19 +6,11 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:26:57 by besellem          #+#    #+#             */
-/*   Updated: 2021/06/25 01:09:52 by besellem         ###   ########.fr       */
+/*   Updated: 2021/06/30 18:28:21 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-// void	start_the_meal(t_philosophers *ph)
-// {
-// 	pthread_t		philo;
-// 	pthread_attr_t	attr;
-
-// 	pthread_create(&philo, &attr, NULL, NULL);
-// }
 
 void	__print_struct__(t_philosophers *ph)
 {
@@ -32,42 +24,61 @@ void	__print_struct__(t_philosophers *ph)
 	printf("}\n");
 }
 
-int	init_the_meal(int ac, char **av, t_philosophers *ph)
+int		__can_eat__(t_philo *philo)
 {
-	memset(ph, 0, sizeof(t_philosophers));
-	ph->philo_nbr = ft_atoi(av[1]);
-	ph->time2die = ft_atoi(av[2]);
-	ph->time2eat = ft_atoi(av[3]);
-	ph->time2sleep = ft_atoi(av[4]);
-	if (6 == ac)
-		ph->nbr2eat = ft_atoi(av[5]);
-	ph->philos = (pthread_t *)malloc(ph->philo_nbr * sizeof(pthread_t));
-	if (!ph->philos)
-		return (FALSE);
-	__print_struct__(ph);
+	(void)philo;
 	return (TRUE);
 }
 
-int	main(__attribute__((unused)) int ac, __attribute__((unused)) char **av)
+void	*__algooooo_(void *content)
 {
-	t_philosophers	ph;
+	t_philo	*philo = (t_philo *)content;
 
+	if (TRUE == __can_eat__(philo))
+	{
+		print_status(philo->id, STAT_EATING);
+		usleep(singleton()->time2eat);
+	}
+	return (NULL);
+}
+
+void	start_the_meal(t_philosophers *ph)
+{
+	int	i;
+
+	ph->start_time_ms = __current_time_ms__();
+	i = 0;
+	while (i < ph->philo_nbr)
+	{
+		pthread_create(&ph->philos[i].philo, NULL, &__algooooo_, &ph->philos[i]);
+		++i;
+	}
+	i = 0;
+	while (i < ph->philo_nbr)
+	{
+		pthread_detach(ph->philos[i].philo);
+		++i;
+	}
+}
+
+int	main(int ac, char **av)
+{
 	if (ac < MIN_ARGS || ac > MAX_ARGS)
 	{
-		printf("usage: ./%s number_of_philosophers time_to_die time_to_eat " \
-			"time_to_sleep  [number_of_times_each_philosopher_must_eat]\n",
-			PROG_NAME);
+		print_usage();
 		return (EXIT_FAILURE);
 	}
-	if (FALSE == init_the_meal(ac, av, &ph))
+	if (NULL == singleton())
 	{
 		printf("%s%d: Malloc Error\n", __FILE__, __LINE__);
-		ft_free_all(&ph, EXIT_FAILURE);
 		return (EXIT_FAILURE);
 	}
+	if (FAILURE == init_the_meal(ac, av, singleton()))
+		return (ft_free_all(EXIT_FAILURE));
+	
+	__print_struct__(singleton());
+	
+	start_the_meal(singleton());
 
-	// start_the_meal(&ph);
-
-	ft_free_all(&ph, EXIT_SUCCESS);
-	return (EXIT_SUCCESS);
+	return (ft_free_all(EXIT_SUCCESS));
 }

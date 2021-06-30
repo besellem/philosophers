@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:56:53 by besellem          #+#    #+#             */
-/*   Updated: 2021/06/25 01:00:29 by besellem         ###   ########.fr       */
+/*   Updated: 2021/06/30 15:43:35 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,13 @@ int	ft_atoi(const char *str)
 	while (*str && *str >= '0' && *str <= '9')
 		nb = nb * 10 + *str++ - 48;
 	return (nb * min);
+}
+
+void	print_usage(void)
+{
+	printf("usage: ./" PROG_NAME " number_of_philosophers\n");
+	printf("               time_to_die\n");
+	printf("               time_to_eat\n");
+	printf("               time_to_sleep\n");
+	printf("               [number_of_times_each_philosopher_must_eat]\n");
 }

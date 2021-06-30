@@ -6,7 +6,7 @@
 #    By: besellem <besellem@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/25 01:10:15 by besellem          #+#    #+#              #
-#    Updated: 2021/06/25 01:26:22 by besellem         ###   ########.fr        #
+#    Updated: 2021/06/30 18:26:44 by besellem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,10 @@ DIRS		:=	$(OBJ_DIR) $(addprefix $(OBJ_DIR)/, $(SUB_DIR))
 
 
 ## Main srcs
-SRCS		:=	main.c \
+SRCS		:=	init_the_meal.c \
+				main.c \
 				memory_management.c \
+				print_status.c \
 				utils.c
 # SRCS		:=	$(addprefix srcs/, $(SUB_SRCS))
 
@@ -34,7 +36,7 @@ OBJS 		:=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 ## Commands
 CC			:=	clang
-CFLAGS		:=	-Wall -Wextra -Werror
+CFLAGS		:=	-Wall -Wextra -Werror -g3 -fsanitize=thread
 RM			:=	rm -f
 
 
@@ -72,7 +74,7 @@ $(BUILD_DIR):
 			@ echo "Creating $(RED)$@ $(CLR_COLOR)..."
 			@ mkdir $@ $(DIRS)
 
-$(OBJ_DIR)/%.o:$(SRCS_DIR)/%.c | $(BUILD_DIR)
+$(OBJ_DIR)/%.o:$(SRCS_DIR)/%.c ./incs/philo.h | $(BUILD_DIR)
 			@ echo "Compiling $(YELLOW)$< $(CLR_COLOR)..."
 			@ $(CC) $(CFLAGS) -c $< -o $@ $(INCS)
 
