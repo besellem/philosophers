@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 15:42:34 by besellem          #+#    #+#             */
-/*   Updated: 2021/06/30 17:42:35 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/01 18:55:51 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,20 @@ static int	__check_args__(int ac, char **av, t_philosophers *ph)
 	{
 		return (FAILURE);
 	}
+	ph->time2die = __get_arg__(av[2]);// * 1000;
+	ph->time2eat = __get_arg__(av[3]);// * 1000;
+	ph->time2sleep = __get_arg__(av[4]);// * 1000;
+	return (SUCCESS);
+}
+
+int	ft_do_malloc(void **ptr, size_t count, size_t size)
+{
+	*ptr = malloc(count * size);
+	if (!*ptr)
+	{
+		printf("%s%d: Malloc Error\n", __FILE__, __LINE__);
+		return (FAILURE);
+	}
 	return (SUCCESS);
 }
 
@@ -56,20 +70,19 @@ int	init_the_meal(int ac, char **av, t_philosophers *ph)
 		print_usage();
 		return (FAILURE);
 	}
-	ph->philos = (t_philo *)malloc(ph->philo_nbr * sizeof(t_philo));
-	if (!ph->philos)
-	{
-		printf("%s%d: Malloc Error\n", __FILE__, __LINE__);
+	if (FAILURE == ft_do_malloc((void **)&ph->philos, ph->philo_nbr, sizeof(t_philo)))
 		return (FAILURE);
-	}
+	if (FAILURE == ft_do_malloc((void **)&ph->forks, ph->philo_nbr, sizeof(pthread_mutex_t)))
+		return (FAILURE);
 	i = 0;
 	while (i < ph->philo_nbr)
 	{
 		memset(&ph->philos[i], 0, sizeof(t_philo));
-		ph->philos[i].id = i;
-		ph->philos[i].left = 1;
-		ph->philos[i].right = 1;
+		ph->philos[i].id = i + 1;
 		++i;
 	}
+	i = 0;
+	while (i < ph->philo_nbr)
+		pthread_mutex_init(&ph->forks[i++], NULL);
 	return (SUCCESS);
 }

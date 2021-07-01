@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:54:43 by besellem          #+#    #+#             */
-/*   Updated: 2021/06/30 17:03:39 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/01 18:42:37 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,19 @@ t_philosophers	*singleton(void)
 
 int	ft_free_all(int code)
 {
+	int	i;
+
 	if (singleton())
 	{
 		if (singleton()->philos)
 			ft_memdel((void **)&singleton()->philos);
+		if (singleton()->forks)
+		{
+			i = 0;
+			while (i < (singleton()->philo_nbr + 1))
+				pthread_mutex_destroy(&singleton()->forks[i]);
+			ft_memdel((void **)&singleton()->forks);
+		}
 		memset(singleton(), 0, sizeof(t_philosophers));
 		free(singleton());
 	}
