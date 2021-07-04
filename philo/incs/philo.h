@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:21:25 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/01 18:42:56 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/04 16:25:50 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ typedef struct s_philo
 	int				id;
 	int				nbr_eaten;	// OPTION  5
 	uint64_t		time2die;
-	unsigned int	status;
 	pthread_t		philo;
 }	t_philo;
 
@@ -79,9 +78,11 @@ typedef struct s_philosophers
 	int				time2eat;
 	int				time2sleep;
 	int				nbr2eat;
+	int				died;
 	uint64_t		start_time_ms;
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	__monitor;
 }	t_philosophers;
 
 /*

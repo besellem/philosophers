@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 15:42:34 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/01 18:55:51 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/04 16:20:53 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ static int	__check_args__(int ac, char **av, t_philosophers *ph)
 	{
 		return (FAILURE);
 	}
-	ph->time2die = __get_arg__(av[2]);// * 1000;
-	ph->time2eat = __get_arg__(av[3]);// * 1000;
-	ph->time2sleep = __get_arg__(av[4]);// * 1000;
+	ph->time2die = __get_arg__(av[2]) * 1000;
+	ph->time2eat = __get_arg__(av[3]) * 1000;
+	ph->time2sleep = __get_arg__(av[4]) * 1000;
 	return (SUCCESS);
 }
 
@@ -84,5 +84,6 @@ int	init_the_meal(int ac, char **av, t_philosophers *ph)
 	i = 0;
 	while (i < ph->philo_nbr)
 		pthread_mutex_init(&ph->forks[i++], NULL);
+	pthread_mutex_init(&ph->__monitor, NULL);
 	return (SUCCESS);
 }
