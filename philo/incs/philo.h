@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:21:25 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/04 16:25:50 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/05 17:16:10 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,16 @@
 # define UINT32_MAXLEN     11
 
 /* struct s_philo `status' */
-# define STAT_THINKING      1
-# define STAT_TAKEN_FORK    2
-# define STAT_EATING        3
-# define STAT_SLEEPING      4
-# define STAT_DIED          5
+# define STAT_THINKING     1
+# define STAT_TAKEN_FORK   2
+# define STAT_EATING       3
+# define STAT_SLEEPING     4
+# define STAT_DIED         5
 
-# define FORK_AVAILABLE     (-1)
+# define FORK_AVAILABLE    (-1)
+
+
+# define ERR() printf("\e[1;31m%s%d\e[0m\n", __FILE__, __LINE__);
 
 /*
 ** -- DATA STRUCTURES --

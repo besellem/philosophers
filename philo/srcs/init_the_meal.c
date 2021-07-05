@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 15:42:34 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/04 16:20:53 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/05 17:07:10 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int	init_the_meal(int ac, char **av, t_philosophers *ph)
 {
 	int	i;
 
-	memset(ph, 0, sizeof(t_philosophers));
 	if (FAILURE == __check_args__(ac, av, ph))
 	{
 		printf("Arguments Error\n");

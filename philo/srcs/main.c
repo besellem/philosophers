@@ -6,11 +6,13 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:26:57 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/04 17:40:53 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/05 17:15:30 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+#define _MS_CONST_ 500
 
 void	__print_struct__(t_philosophers *ph)
 {
@@ -24,6 +26,19 @@ void	__print_struct__(t_philosophers *ph)
 	printf("}\n");
 }
 
+void	__usleep__(int ms)
+{
+	int	elapsed;
+
+	elapsed = 0;
+	while (elapsed < ms)
+	{
+		usleep(_MS_CONST_);
+		elapsed += _MS_CONST_;
+	}
+	// usleep(ms);
+}
+
 void	__eat__(int philo_id)
 {
 	const int	left = philo_id;
@@ -31,20 +46,44 @@ void	__eat__(int philo_id)
 
 	if (0 == (philo_id % 2))
 	{
+		
+		ERR()
+		
 		pthread_mutex_lock(&singleton()->forks[left]);
+		
+		ERR()
+		
 		print_status(philo_id, STAT_TAKEN_FORK);
 		pthread_mutex_lock(&singleton()->forks[right]);
+		
+		ERR()
+		
 		print_status(philo_id, STAT_TAKEN_FORK);
 	}
 	else
 	{
+		
+		ERR()
+		
 		pthread_mutex_lock(&singleton()->forks[right]);
+		
+		ERR()
+		
 		print_status(philo_id, STAT_TAKEN_FORK);
 		pthread_mutex_lock(&singleton()->forks[left]);
+		
+		ERR()
+		
 		print_status(philo_id, STAT_TAKEN_FORK);
 	}
+	
+	ERR()
+	
 	print_status(philo_id, STAT_EATING);
-	usleep(singleton()->time2eat);
+	__usleep__(singleton()->time2eat);
+	
+	ERR()
+	
 }
 
 void	drop_forks(int philo_id)
@@ -67,7 +106,7 @@ void	drop_forks(int philo_id)
 void	__sleep__(int philo_id)
 {
 	print_status(philo_id, STAT_SLEEPING);
-	usleep(singleton()->time2sleep);
+	__usleep__(singleton()->time2sleep);
 }
 
 void	__think__(t_philo *philo)
@@ -112,7 +151,7 @@ void	start_the_meal(t_philosophers *ph)
 		++i;
 	}
 
-	// host()
+	// host();
 
 	i = 0;
 	while (i < ph->philo_nbr)
