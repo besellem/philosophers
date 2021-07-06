@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 15:42:34 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/06 14:35:50 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/06 15:48:19 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,10 @@ static int	__check_args__(int ac, char **av, t_philosophers *ph)
 	{
 		return (FAILURE);
 	}
-	ph->time2die = __get_arg__(av[2]);
-	ph->time2eat = __get_arg__(av[3]);
-	ph->time2sleep = __get_arg__(av[4]);
 	return (SUCCESS);
 }
 
-int	ft_do_malloc(void **ptr, size_t count, size_t size)
+int	ft_malloc(void **ptr, size_t count, size_t size)
 {
 	*ptr = malloc(count * size);
 	if (!*ptr)
@@ -63,15 +60,20 @@ int	init_the_meal(int ac, char **av, t_philosophers *ph)
 {
 	int	i;
 
+	if (NULL == singleton())
+	{
+		printf("%s%d: Malloc Error\n", __FILE__, __LINE__);
+		return (FAILURE);
+	}
 	if (FAILURE == __check_args__(ac, av, ph))
 	{
 		printf("Arguments Error\n");
 		print_usage();
 		return (FAILURE);
 	}
-	if (FAILURE == ft_do_malloc((void **)&ph->philos, ph->philo_nbr, sizeof(t_philo)))
+	if (FAILURE == ft_malloc((void **)&ph->philos, ph->philo_nbr, sizeof(t_philo)))
 		return (FAILURE);
-	if (FAILURE == ft_do_malloc((void **)&ph->forks, ph->philo_nbr, sizeof(pthread_mutex_t)))
+	if (FAILURE == ft_malloc((void **)&ph->forks, ph->philo_nbr, sizeof(pthread_mutex_t)))
 		return (FAILURE);
 	i = 0;
 	while (i < ph->philo_nbr)

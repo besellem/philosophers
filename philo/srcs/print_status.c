@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 17:38:24 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/06 14:31:20 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/06 16:46:35 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ const char	*g_status[] = {
 	[STAT_TAKEN_FORK] = "has taken a fork",
 	[STAT_EATING] = "is eating",
 	[STAT_SLEEPING] = "is sleeping",
-	[STAT_DIED] = "died"
+	[STAT_DIED] = B_RED "died" CLR_COLOR
 };
 
 uint64_t	__current_time_ms__(void)

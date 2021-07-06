@@ -6,13 +6,13 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:26:57 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/06 14:35:21 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/06 18:26:17 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-#define _MS_CONST_ 400
+#define _MS_CONST_ 500
 
 void	__print_struct__(t_philosophers *ph)
 {
@@ -30,11 +30,11 @@ void	__usleep__(int ms)
 {
 	const uint64_t	now = __current_time_ms__();
 
-	while ((__current_time_ms__()) - now < (uint64_t)ms)
+	while (__current_time_ms__() - now < (uint64_t)ms)
 		usleep(_MS_CONST_);
 }
 
-void	__eat__(int philo_id)
+void	step_eat(int philo_id)
 {
 	const int	left = philo_id;
 	const int	right = (philo_id + 1) % singleton()->philo_nbr;
@@ -47,17 +47,18 @@ void	__eat__(int philo_id)
 		print_status(philo_id, STAT_TAKEN_FORK);
 	}
 	else
-	{	
+	{
 		pthread_mutex_lock(&singleton()->forks[right]);
 		print_status(philo_id, STAT_TAKEN_FORK);
 		pthread_mutex_lock(&singleton()->forks[left]);
 		print_status(philo_id, STAT_TAKEN_FORK);
 	}	
 	print_status(philo_id, STAT_EATING);
+	singleton()->philos[philo_id].time2die = __current_time_ms__();
 	__usleep__(singleton()->time2eat);
 }
 
-void	drop_forks(int philo_id)
+void	step_drop_forks(int philo_id)
 {
 	const int	left = philo_id;
 	const int	right = (philo_id + 1) % singleton()->philo_nbr;
@@ -74,39 +75,50 @@ void	drop_forks(int philo_id)
 	}
 }
 
-void	__sleep__(int philo_id)
+void	step_sleep(int philo_id)
 {
 	print_status(philo_id, STAT_SLEEPING);
 	__usleep__(singleton()->time2sleep);
 }
 
-void	__think__(t_philo *philo)
+void	*host(__attribute__((unused)) void *none)
 {
-	print_status(philo->id, STAT_THINKING);
-	philo->time2die = __current_time_ms__();
+	while (TRUE)
+	{
+		pthread_mutex_lock(&singleton()->__monitor);
+		if (FALSE != singleton()->died)
+		{
+			pthread_mutex_unlock(&singleton()->__monitor);
+			break ;
+		}
+		pthread_mutex_unlock(&singleton()->__monitor);
+	}
+	return (NULL);
 }
 
-static void	*__philo_process_(void *content)
+static void	*a_philo_life(void *content)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)content;
 	while (FALSE == singleton()->died)
 	{
-		__eat__(philo->id);
-		drop_forks(philo->id);
-		__sleep__(philo->id);
-		__think__(philo);
+		step_eat(philo->id);
+		step_drop_forks(philo->id);
+		step_sleep(philo->id);
+		print_status(philo->id, STAT_THINKING);
 		if ((__current_time_ms__() - philo->time2die) >= (uint64_t)singleton()->time2die)
 		{
-			print_status(philo->id, STAT_DIED);
-			// pthread_mutex_lock(&singleton()->__monitor);
-			singleton()->died = TRUE;
-			// pthread_mutex_unlock(&singleton()->__monitor);
-			exit(1);
+			pthread_mutex_lock(&singleton()->__monitor);
+			if (FALSE == singleton()->died)
+				print_status(philo->id, STAT_DIED);
+			singleton()->died = philo->id;
+			pthread_mutex_unlock(&singleton()->__monitor);
+			// exit(1);
 			break ;
 		}
 	}
+	// printf(B_RED "philo_id -> [%d]" CLR_COLOR "\n", philo->id + 1);
 	return (NULL);
 }
 
@@ -122,9 +134,13 @@ void	start_the_meal(t_philosophers *ph)
 	ph->start_time_ms = __current_time_ms__();
 	while (i < ph->philo_nbr)
 	{
-		pthread_create(&ph->philos[i].philo, NULL, &__philo_process_, &ph->philos[i]);
+		pthread_create(&ph->philos[i].philo, NULL, &a_philo_life,
+			&ph->philos[i]);
 		++i;
 	}
+	
+	// host(NULL);
+
 	i = 0;
 	while (i < ph->philo_nbr)
 		pthread_join(ph->philos[i++].philo, NULL);
@@ -137,16 +153,9 @@ int	main(int ac, char **av)
 		print_usage();
 		return (EXIT_FAILURE);
 	}
-	if (NULL == singleton())
-	{
-		printf("%s%d: Malloc Error\n", __FILE__, __LINE__);
-		return (EXIT_FAILURE);
-	}
 	if (FAILURE == init_the_meal(ac, av, singleton()))
 		return (ft_free_all(EXIT_FAILURE));
-	
 	// __print_struct__(singleton());
-	
 	start_the_meal(singleton());
 	return (ft_free_all(EXIT_SUCCESS));
 }
