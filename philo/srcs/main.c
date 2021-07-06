@@ -6,13 +6,13 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:26:57 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/05 17:15:30 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/06 14:35:21 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-#define _MS_CONST_ 500
+#define _MS_CONST_ 400
 
 void	__print_struct__(t_philosophers *ph)
 {
@@ -28,15 +28,10 @@ void	__print_struct__(t_philosophers *ph)
 
 void	__usleep__(int ms)
 {
-	int	elapsed;
+	const uint64_t	now = __current_time_ms__();
 
-	elapsed = 0;
-	while (elapsed < ms)
-	{
+	while ((__current_time_ms__()) - now < (uint64_t)ms)
 		usleep(_MS_CONST_);
-		elapsed += _MS_CONST_;
-	}
-	// usleep(ms);
 }
 
 void	__eat__(int philo_id)
@@ -46,44 +41,20 @@ void	__eat__(int philo_id)
 
 	if (0 == (philo_id % 2))
 	{
-		
-		ERR()
-		
 		pthread_mutex_lock(&singleton()->forks[left]);
-		
-		ERR()
-		
 		print_status(philo_id, STAT_TAKEN_FORK);
 		pthread_mutex_lock(&singleton()->forks[right]);
-		
-		ERR()
-		
 		print_status(philo_id, STAT_TAKEN_FORK);
 	}
 	else
-	{
-		
-		ERR()
-		
+	{	
 		pthread_mutex_lock(&singleton()->forks[right]);
-		
-		ERR()
-		
 		print_status(philo_id, STAT_TAKEN_FORK);
 		pthread_mutex_lock(&singleton()->forks[left]);
-		
-		ERR()
-		
 		print_status(philo_id, STAT_TAKEN_FORK);
-	}
-	
-	ERR()
-	
+	}	
 	print_status(philo_id, STAT_EATING);
 	__usleep__(singleton()->time2eat);
-	
-	ERR()
-	
 }
 
 void	drop_forks(int philo_id)
@@ -112,9 +83,7 @@ void	__sleep__(int philo_id)
 void	__think__(t_philo *philo)
 {
 	print_status(philo->id, STAT_THINKING);
-	// pthread_mutex_lock(&singleton()->__monitor);
 	philo->time2die = __current_time_ms__();
-	// pthread_mutex_unlock(&singleton()->__monitor);
 }
 
 static void	*__philo_process_(void *content)
@@ -131,8 +100,10 @@ static void	*__philo_process_(void *content)
 		if ((__current_time_ms__() - philo->time2die) >= (uint64_t)singleton()->time2die)
 		{
 			print_status(philo->id, STAT_DIED);
+			// pthread_mutex_lock(&singleton()->__monitor);
 			singleton()->died = TRUE;
-			// exit(1);
+			// pthread_mutex_unlock(&singleton()->__monitor);
+			exit(1);
 			break ;
 		}
 	}
@@ -144,15 +115,16 @@ void	start_the_meal(t_philosophers *ph)
 	int	i;
 
 	i = 0;
+	while (i < ph->philo_nbr)
+		pthread_mutex_init(&ph->forks[i++], NULL);
+	pthread_mutex_init(&ph->__monitor, NULL);
+	i = 0;
 	ph->start_time_ms = __current_time_ms__();
 	while (i < ph->philo_nbr)
 	{
 		pthread_create(&ph->philos[i].philo, NULL, &__philo_process_, &ph->philos[i]);
 		++i;
 	}
-
-	// host();
-
 	i = 0;
 	while (i < ph->philo_nbr)
 		pthread_join(ph->philos[i++].philo, NULL);
@@ -173,7 +145,7 @@ int	main(int ac, char **av)
 	if (FAILURE == init_the_meal(ac, av, singleton()))
 		return (ft_free_all(EXIT_FAILURE));
 	
-	__print_struct__(singleton());
+	// __print_struct__(singleton());
 	
 	start_the_meal(singleton());
 	return (ft_free_all(EXIT_SUCCESS));

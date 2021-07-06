@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 17:38:24 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/04 16:12:43 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/06 14:31:20 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ void	print_status(int philo_id, int status)
 {
 	const uint64_t	__ms = __current_time_ms__() - singleton()->start_time_ms;
 
-	printf("[%11llu] %3d %s\n", __ms, philo_id, g_status[status]);
+	printf("[%11llu] %3d %s\n", __ms, philo_id + 1, g_status[status]);
 }
