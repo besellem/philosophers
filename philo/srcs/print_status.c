@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 17:38:24 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/06 16:46:35 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/07 17:21:12 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,17 @@ void	print_status(int philo_id, int status)
 {
 	const uint64_t	__ms = __current_time_ms__() - singleton()->start_time_ms;
 
-	printf("[%11llu] %3d %s\n", __ms, philo_id + 1, g_status[status]);
+	pthread_mutex_lock(&singleton()->__monitor);
+	if (singleton()->died != FALSE)
+	{
+		pthread_mutex_unlock(&singleton()->__monitor);
+		return ;
+	}
+	pthread_mutex_unlock(&singleton()->__monitor);
+	if (__everyone_got_his_meals__())
+		return ;
+	if (STAT_EATING == status)
+		printf("[%7llu] %3d %s for the %d time\n", __ms, philo_id + 1, g_status[status], singleton()->philos[philo_id].nbr_eaten);
+	else
+		printf("[%7llu] %3d %s\n", __ms, philo_id + 1, g_status[status]);
 }

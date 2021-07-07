@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:21:25 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/06 18:23:19 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/07 16:48:03 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # define FAILURE           1
 
 # define INVALID           (-1)
+# define EMPTY             (-1)
 
 # define UINT32_MAXLEN     11
 
@@ -59,16 +60,18 @@
 # define STAT_DIED         5
 
 /* color codes */
-# define B_BLACK "\e[1;30m"
-# define B_RED "\e[1;31m"
-# define B_GREEN "\e[1;32m"
-# define B_YELLOW "\e[1;33m"
-# define B_BLUE "\e[1;34m"
-# define B_PURPLE "\e[1;35m"
-# define B_CYAN "\e[1;36m"
-# define B_GRAY "\e[1;37m"
+# define B_BLACK    "\e[1;30m"
+# define B_RED      "\e[1;31m"
+# define B_GREEN    "\e[1;32m"
+# define B_YELLOW   "\e[1;33m"
+# define B_BLUE     "\e[1;34m"
+# define B_PURPLE   "\e[1;35m"
+# define B_CYAN     "\e[1;36m"
+# define B_GRAY     "\e[1;37m"
 
-# define CLR_COLOR "\e[0m"
+# define CLR_COLOR  "\e[0m"
+
+# define ERR() printf("%s:%d: Here\n", __FILE__, __LINE__);
 
 /*
 ** -- DATA STRUCTURES --
@@ -113,5 +116,7 @@ void			print_status(int philo_id, int status);
 /* General */
 void			print_usage(void);
 int				init_the_meal(int ac, char **av, t_philosophers *ph);
+int				__everyone_got_his_meals__(void);
+int				is_alive(int philo_id);
 
 #endif
