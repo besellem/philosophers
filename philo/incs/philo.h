@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:21:25 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/07 16:48:03 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/08 17:56:15 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,13 @@
 
 # define CLR_COLOR  "\e[0m"
 
-# define ERR() printf("%s:%d: Here\n", __FILE__, __LINE__);
-
 /*
 ** -- DATA STRUCTURES --
 */
 typedef struct s_philo
 {
 	int				id;
-	int				nbr_eaten;	// OPTION  5
+	int				nbr_eaten;
 	uint64_t		time2die;
 	pthread_t		philo;
 }	t_philo;
@@ -111,12 +109,20 @@ int				ft_free_all(int code);
 
 /* status */
 uint64_t		__current_time_ms__(void);
+void			__usleep__(int philo_id, int ms);
 void			print_status(int philo_id, int status);
 
 /* General */
 void			print_usage(void);
-int				init_the_meal(int ac, char **av, t_philosophers *ph);
-int				__everyone_got_his_meals__(void);
+int				dress_the_table(int ac, char **av, t_philosophers *ph);
+
+/* Philo borring life steps */
+void			step_eat(int philo_id);
+void			step_drop_forks(int philo_id);
+void			step_sleep(int philo_id);
+
+/* Checks */
+int				everyone_got_his_meals(void);
 int				is_alive(int philo_id);
 
 #endif

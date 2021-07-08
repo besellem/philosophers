@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_the_meal.c                                    :+:      :+:    :+:   */
+/*   dress_the_table.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 15:42:34 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/07 17:03:16 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/08 17:40:53 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	_alloc_ptr(void **ptr, size_t count, size_t size)
 	return (SUCCESS);
 }
 
-int	init_the_meal(int ac, char **av, t_philosophers *ph)
+int	dress_the_table(int ac, char **av, t_philosophers *ph)
 {
 	int	i;
 

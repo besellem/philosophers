@@ -6,7 +6,7 @@
 #    By: besellem <besellem@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/25 01:10:15 by besellem          #+#    #+#              #
-#    Updated: 2021/07/01 16:02:26 by besellem         ###   ########.fr        #
+#    Updated: 2021/07/08 17:57:53 by besellem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,9 @@ DIRS		:=	$(OBJ_DIR) $(addprefix $(OBJ_DIR)/, $(SUB_DIR))
 
 
 ## Main srcs
-SRCS		:=	init_the_meal.c \
+SRCS		:=	alive_checks.c \
+				dress_the_table.c \
+				life_steps.c \
 				main.c \
 				memory_management.c \
 				print_status.c \
@@ -36,7 +38,7 @@ OBJS 		:=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 ## Commands
 CC			:=	clang
-CFLAGS		:=	-Wall -Wextra -Werror -g3 -fsanitize=thread
+CFLAGS		:=	-Wall -Wextra -Werror
 RM			:=	rm -f
 
 
