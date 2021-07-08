@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 17:45:31 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/08 18:13:53 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/08 18:19:27 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	is_alive(int philo_id)
 		return (FALSE);
 	}
 	pthread_mutex_unlock(&singleton()->__monitor);
-	if (philo_id != EMPTY && singleton()->philos[philo_id].time2die != 0)
+	if (singleton()->philos[philo_id].time2die != 0)
 	{
 		isdead = __current_time_ms__() - singleton()->philos[philo_id].time2die;
 		if (isdead > (uint64_t)singleton()->time2die)

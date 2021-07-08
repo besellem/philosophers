@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:21:25 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/08 17:56:15 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/08 18:19:32 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@
 # define FAILURE           1
 
 # define INVALID           (-1)
-# define EMPTY             (-1)
 
 # define UINT32_MAXLEN     11
 
