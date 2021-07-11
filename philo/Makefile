@@ -6,7 +6,7 @@
 #    By: besellem <besellem@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/25 01:10:15 by besellem          #+#    #+#              #
-#    Updated: 2021/07/08 17:57:53 by besellem         ###   ########.fr        #
+#    Updated: 2021/07/11 14:56:56 by besellem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ CYAN 		:= \033[1;36m
 ## Compilation
 $(NAME):	$(OBJS)
 			@echo "Creating $(RED_COLOR)$@ $(CLR_COLOR)..."
-			@$(CC) $(CFLAGS) $(INCS) $^ -o $@
+			@$(CC) $(CFLAGS) $(INCS) $^ -o $@ -lpthread
 			@echo "$(GREEN)Compilation $(YELLOW)of $(RED)$@ $(BLUE)done$(CLR_COLOR)"
 
 all:		$(NAME)
