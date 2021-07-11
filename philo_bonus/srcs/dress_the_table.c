@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 15:42:34 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/11 14:35:39 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/11 16:20:09 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	check_args(int ac, char **av, t_philosophers *ph)
 
 static int	init_philos(t_philosophers *ph)
 {
-	size_t	i;
+	int	i;
 
 	ph->philos = malloc(ph->philo_nbr * sizeof(t_philo));
 	if (!ph->philos)
@@ -93,19 +93,20 @@ static int	init_semaphores(t_philosophers *ph)
 	return (check);
 }
 
-static int	init_processes(t_philosophers *ph)
+static void	init_processes(t_philosophers *ph)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (i < ph->philo_nbr)
 	{
 		ph->philos[i].pid = fork();
 		if (ph->philos[i].pid < 0)
-			return (FAILURE);
+			return ;
 		else if (0 == ph->philos[i].pid)
 		{
 			a_philo_life(i);
+			// kill(ph->philos[i].pid, SIGKILL);
 		}
 		else
 		{
@@ -113,6 +114,12 @@ static int	init_processes(t_philosophers *ph)
 		}
 		++i;
 	}
+}
+
+void	*monitoring(__attribute__((unused)) void *unused)
+{
+	printf("HERE\n");
+	return (NULL);
 }
 
 int	dress_the_table(int ac, char **av, t_philosophers *ph)
@@ -125,8 +132,8 @@ int	dress_the_table(int ac, char **av, t_philosophers *ph)
 		return (FAILURE);
 	if (FAILURE == init_semaphores(ph))
 		return (FAILURE);
-	if (FAILURE == init_processes(ph))
-		return (FAILURE);
 	ph->died = FALSE;
+	init_processes(ph);
+	// pthread_create(&ph->monitor, NULL, monitoring, NULL);
 	return (SUCCESS);
 }

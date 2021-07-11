@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:26:57 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/11 14:24:10 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/11 16:07:28 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,21 @@
 void	a_philo_life(int id)
 {
 	singleton()->philos[id].time2die = __current_time_ms__();
-	while (is_alive(id) && !everyone_got_his_meals())
+	// while (is_alive(id) && !everyone_got_his_meals())
+	while (TRUE)
 	{
-		if (1 == singleton()->philo_nbr)
-		{
-			print_status(id, STAT_TAKEN_FORK);
-			__usleep__(id, singleton()->time2die);
-		}
-		else
-		{
+		// if (1 == singleton()->philo_nbr)
+		// {
+		// 	print_status(id, STAT_TAKEN_FORK);
+		// 	__usleep__(id, singleton()->time2die);
+		// }
+		// else
+		// {
 			step_eat(id);
-			step_drop_forks(id);
+			step_drop_forks();
 			step_sleep(id);
 			print_status(id, STAT_THINKING);
-		}
+		// }
 	}
 }
 
@@ -58,6 +59,6 @@ int	main(int ac, char **av)
 	}
 	if (FAILURE == dress_the_table(ac, av, singleton()))
 		return (ft_free_all(EXIT_FAILURE));
-	start_the_meal(singleton());
+	// start_the_meal(singleton());
 	return (ft_free_all(EXIT_SUCCESS));
 }

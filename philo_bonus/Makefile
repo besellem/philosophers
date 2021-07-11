@@ -6,7 +6,7 @@
 #    By: besellem <besellem@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/25 01:10:15 by besellem          #+#    #+#              #
-#    Updated: 2021/07/11 11:36:12 by besellem         ###   ########.fr        #
+#    Updated: 2021/07/11 15:17:58 by besellem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ CYAN 		:= \033[1;36m
 ## Compilation
 $(NAME):	$(OBJS)
 			@echo "Creating $(RED_COLOR)$@ $(CLR_COLOR)..."
-			@$(CC) $(CFLAGS) $(INCS) $^ -o $@
+			@$(CC) $(CFLAGS) $(INCS) $^ -o $@ -lpthread
 			@echo "$(GREEN)Compilation $(YELLOW)of $(RED)$@ $(BLUE)done$(CLR_COLOR)"
 
 all:		$(NAME)
@@ -76,7 +76,7 @@ $(BUILD_DIR):
 			@ echo "Creating $(RED)$@ $(CLR_COLOR)..."
 			@ mkdir $@ $(DIRS)
 
-$(OBJ_DIR)/%.o:$(SRCS_DIR)/%.c ./incs/philo.h | $(BUILD_DIR)
+$(OBJ_DIR)/%.o:$(SRCS_DIR)/%.c ./incs/philo_bonus.h | $(BUILD_DIR)
 			@ echo "Compiling $(YELLOW)$< $(CLR_COLOR)..."
 			@ $(CC) $(CFLAGS) -c $< -o $@ $(INCS)
 

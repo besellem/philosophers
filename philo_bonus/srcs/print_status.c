@@ -6,11 +6,17 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 17:38:24 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/11 12:30:56 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/11 15:36:31 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+#if defined(__APPLE__) && defined(__MACH__)
+# define MS_FMT "llu"
+#else
+# define MS_FMT "lu"
+#endif
 
 const char	*g_status[] = {
 	[STAT_THINKING] = "is thinking",
@@ -24,14 +30,16 @@ void	print_status(int philo_id, int status)
 {
 	const uint64_t	__ms = __current_time_ms__() - singleton()->start_time_ms;
 
-	pthread_mutex_lock(&singleton()->__monitor);
+	sem_wait(singleton()->sem_monitor);
 	if (singleton()->died != FALSE)
 	{
-		pthread_mutex_unlock(&singleton()->__monitor);
+		sem_post(singleton()->sem_monitor);
 		return ;
 	}
-	pthread_mutex_unlock(&singleton()->__monitor);
+	sem_post(singleton()->sem_monitor);
 	if (everyone_got_his_meals())
 		return ;
-	printf("[%7llu] %3d %s\n", __ms, philo_id + 1, g_status[status]);
+	sem_wait(singleton()->sem_monitor);
+	printf("[%7" MS_FMT "] %3d %s\n", __ms, philo_id + 1, g_status[status]);
+	sem_post(singleton()->sem_monitor);
 }

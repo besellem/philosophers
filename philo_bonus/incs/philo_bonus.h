@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:21:25 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/11 14:57:19 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/11 15:52:47 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ typedef struct s_philo
 	pid_t			pid;
 	int				nbr_eaten;
 	uint64_t		time2die;
-	pthread_t		philo;
 }	t_philo;
 
 typedef struct s_philosophers
@@ -106,6 +105,7 @@ typedef struct s_philosophers
 	int			died;
 	uint64_t	start_time_ms;
 	t_philo		*philos;
+	pthread_t	monitor;
 	sem_t		*forks;
 	sem_t		*sem_end;
 	sem_t		*sem_monitor;
@@ -134,7 +134,7 @@ void			a_philo_life(int id);
 
 /* Philo borring life steps */
 void			step_eat(int philo_id);
-void			step_drop_forks(int philo_id);
+void			step_drop_forks(void);
 void			step_sleep(int philo_id);
 
 /* Checks */
