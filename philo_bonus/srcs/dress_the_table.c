@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 15:42:34 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/11 16:20:09 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/12 11:26:06 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,57 +71,6 @@ static int	init_philos(t_philosophers *ph)
 	return (SUCCESS);
 }
 
-static int	init_semaphores(t_philosophers *ph)
-{
-	int	check;
-
-	check = SUCCESS;
-	sem_unlink(_SEM_END_);
-	sem_unlink(_SEM_FORKS_);
-	sem_unlink(_SEM_MONITOR_);
-	ph->sem_end = sem_open(_SEM_END_, O_CREAT, __SEM_MODE__, 1);
-	if (SEM_FAILED == ph->sem_end)
-		check = FAILURE;
-	ph->forks = sem_open(_SEM_FORKS_, O_CREAT, __SEM_MODE__, ph->philo_nbr);
-	if (SEM_FAILED == ph->forks)
-		check = FAILURE;
-	ph->sem_monitor = sem_open(_SEM_MONITOR_, O_CREAT, __SEM_MODE__, 1);
-	if (SEM_FAILED == ph->sem_monitor)
-		check = FAILURE;
-	if (FAILURE == check)
-		printf("%s%d: sem_open() error\n", __FILE__, __LINE__);
-	return (check);
-}
-
-static void	init_processes(t_philosophers *ph)
-{
-	int	i;
-
-	i = 0;
-	while (i < ph->philo_nbr)
-	{
-		ph->philos[i].pid = fork();
-		if (ph->philos[i].pid < 0)
-			return ;
-		else if (0 == ph->philos[i].pid)
-		{
-			a_philo_life(i);
-			// kill(ph->philos[i].pid, SIGKILL);
-		}
-		else
-		{
-			waitpid(ph->philos[i].pid, NULL, 0);
-		}
-		++i;
-	}
-}
-
-void	*monitoring(__attribute__((unused)) void *unused)
-{
-	printf("HERE\n");
-	return (NULL);
-}
-
 int	dress_the_table(int ac, char **av, t_philosophers *ph)
 {
 	if (NULL == singleton())
@@ -130,10 +79,9 @@ int	dress_the_table(int ac, char **av, t_philosophers *ph)
 		return (FAILURE);
 	if (FAILURE == init_philos(ph))
 		return (FAILURE);
-	if (FAILURE == init_semaphores(ph))
+	__unlink_semaphores__();
+	if (FAILURE == __open_semaphores__(ph))
 		return (FAILURE);
 	ph->died = FALSE;
-	init_processes(ph);
-	// pthread_create(&ph->monitor, NULL, monitoring, NULL);
 	return (SUCCESS);
 }

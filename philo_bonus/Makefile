@@ -6,7 +6,7 @@
 #    By: besellem <besellem@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/25 01:10:15 by besellem          #+#    #+#              #
-#    Updated: 2021/07/11 15:17:58 by besellem         ###   ########.fr        #
+#    Updated: 2021/07/12 11:09:03 by besellem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS		:=	alive_checks.c \
 				main.c \
 				memory_management.c \
 				print_status.c \
+				semaphore_utils.c \
 				utils.c
 # SRCS		:=	$(addprefix srcs/, $(SUB_SRCS))
 
@@ -38,7 +39,7 @@ OBJS 		:=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 ## Commands
 CC			:=	clang
-CFLAGS		:=	-Wall -Wextra -Werror
+CFLAGS		:=	-Wall -Wextra -Werror -g3 -fsanitize=thread
 RM			:=	rm -f
 
 

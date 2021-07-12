@@ -6,12 +6,12 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:21:25 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/11 15:52:47 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/12 12:09:24 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 /*
 ** -- INCLUDES --
@@ -60,7 +60,6 @@
 # define UINT32_MAXLEN     11
 
 /* path names for sem_open() */
-# define __SEM_MODE__      0660
 # define _SEM_END_         "sem_end"
 # define _SEM_FORKS_       "sem_forks"
 # define _SEM_MONITOR_     "sem_monitor"
@@ -73,16 +72,18 @@
 # define STAT_DIED         5
 
 /* color codes */
-# define B_BLACK    "\e[1;30m"
 # define B_RED      "\e[1;31m"
 # define B_GREEN    "\e[1;32m"
 # define B_YELLOW   "\e[1;33m"
 # define B_BLUE     "\e[1;34m"
 # define B_PURPLE   "\e[1;35m"
 # define B_CYAN     "\e[1;36m"
-# define B_GRAY     "\e[1;37m"
 
 # define CLR_COLOR  "\e[0m"
+
+# define LOG() printf(B_GREEN "%s:%d:" CLR_COLOR " Here\n", __FILE__, __LINE__);
+# define WARN() printf(B_PURPLE "%s:%d:" CLR_COLOR " Here\n", __FILE__, __LINE__);
+# define ERR() printf(B_RED "%s:%d:" CLR_COLOR " Here\n", __FILE__, __LINE__);
 
 /*
 ** -- DATA STRUCTURES --
@@ -97,18 +98,18 @@ typedef struct s_philo
 
 typedef struct s_philosophers
 {
-	int			philo_nbr;
-	int			time2die;
-	int			time2eat;
-	int			time2sleep;
-	int			nbr2eat;
-	int			died;
-	uint64_t	start_time_ms;
-	t_philo		*philos;
-	pthread_t	monitor;
-	sem_t		*forks;
-	sem_t		*sem_end;
-	sem_t		*sem_monitor;
+	int				philo_nbr;
+	int				time2die;
+	int				time2eat;
+	int				time2sleep;
+	int				nbr2eat;
+	int				died;
+	uint64_t		start_time_ms;
+	t_philo			*philos;
+	pthread_t		monitor;
+	sem_t			*sem_end;
+	sem_t			*forks;
+	sem_t			*sem_monitor;
 }	t_philosophers;
 
 /*
@@ -122,23 +123,28 @@ int				ft_atoi(const char *str);
 t_philosophers	*singleton(void);
 int				ft_free_all(int code);
 
-/* status */
+/* Status */
 uint64_t		__current_time_ms__(void);
-void			__usleep__(int philo_id, int ms);
-void			print_status(int philo_id, int status);
+void			__usleep__(t_philosophers *ph, int philo_id, int ms);
+void			print_status(t_philosophers *ph, int philo_id, int status);
 
 /* General */
 void			print_usage(void);
 int				dress_the_table(int ac, char **av, t_philosophers *ph);
-void			a_philo_life(int id);
+void			a_philo_life(t_philosophers *ph, int id);
 
 /* Philo borring life steps */
-void			step_eat(int philo_id);
-void			step_drop_forks(void);
-void			step_sleep(int philo_id);
+void			step_eat(t_philosophers *ph, int philo_id);
+void			step_drop_forks(t_philosophers *ph);
+void			step_sleep(t_philosophers *ph, int philo_id);
+
+/* Semaphore Utils */
+int				__open_semaphores__(t_philosophers *ph);
+void			__close_semaphores__(t_philosophers *ph);
+void			__unlink_semaphores__(void);
 
 /* Checks */
-int				everyone_got_his_meals(void);
-int				is_alive(int philo_id);
+int				everyone_got_his_meals(t_philosophers *ph);
+int				is_alive(t_philosophers *ph, int philo_id);
 
 #endif

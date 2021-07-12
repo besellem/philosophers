@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:56:53 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/11 12:30:58 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/12 11:39:27 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 #define _MS_CONST_ 500
 
-void	__usleep__(int philo_id, int ms)
+void	__usleep__(t_philosophers *ph, int philo_id, int ms)
 {
 	const uint64_t	now = __current_time_ms__();
 
-	while (is_alive(philo_id) && (__current_time_ms__() - now) < (uint64_t)ms)
+	while (is_alive(ph, philo_id) && (__current_time_ms__() - now) < (uint64_t)ms)
 		usleep(_MS_CONST_);
 }
 

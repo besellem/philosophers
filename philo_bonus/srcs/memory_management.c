@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:54:43 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/11 16:16:02 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/12 12:07:01 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,24 +35,20 @@ int	ft_free_all(int code)
 
 	if (singleton())
 	{
+		__close_semaphores__(singleton());
+		// __unlink_semaphores__();
 		if (singleton()->philos)
 		{
 			i = 0;
 			while (i < singleton()->philo_nbr)
 			{
-				printf(B_RED "killing philo[%d] -> pid[%d]" CLR_COLOR "\n",
+				printf(B_RED"    killing "CLR_COLOR"philo[%d] -> pid[%d] ...\n",
 					i, singleton()->philos[i].pid);
-				kill(singleton()->philos[i].pid, SIGKILL);
+				// kill(singleton()->philos[i].pid, SIGQUIT);
 				++i;
 			}
 			ft_memdel((void **)&singleton()->philos);
 		}
-		sem_close(singleton()->sem_end);
-		sem_close(singleton()->forks);
-		sem_close(singleton()->sem_monitor);
-		sem_unlink(_SEM_END_);
-		sem_unlink(_SEM_FORKS_);
-		sem_unlink(_SEM_MONITOR_);
 		memset(singleton(), 0, sizeof(t_philosophers));
 		free(singleton());
 	}
