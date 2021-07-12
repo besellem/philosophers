@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 09:51:42 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/12 11:16:12 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/12 16:09:29 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 // int	__open_semaphores__(t_philosophers *ph)
 // {
 // 	struct s_sem_open	table[] = {
-// 		{_SEM_END_, 1, ph->sem_end},
 // 		{_SEM_FORKS_, ph->philo_nbr, ph->forks},
 // 		{_SEM_MONITOR_, 1, ph->sem_monitor},
 // 		{NULL, 0, NULL}
@@ -45,35 +44,35 @@
 // 	return (SUCCESS);
 // }
 
-int	__open_semaphores__(t_philosophers *ph)
+int	__open_semaphores__(void)
 {
 	int	check;
 
 	check = SUCCESS;
-	ph->sem_end = sem_open(_SEM_END_, O_CREAT, __SEM_MODE__, 1);
-	if (SEM_FAILED == ph->sem_end)
+	singleton()->__sem_glob = sem_open(_SEM_GLOB_, O_CREAT, __SEM_MODE__, 0);
+	if (SEM_FAILED == singleton()->__sem_glob)
 		check = FAILURE;
-	ph->forks = sem_open(_SEM_FORKS_, O_CREAT, __SEM_MODE__, ph->philo_nbr);
-	if (SEM_FAILED == ph->forks)
+	singleton()->forks = sem_open(_SEM_FORKS_, O_CREAT, __SEM_MODE__, singleton()->philo_nbr);
+	if (SEM_FAILED == singleton()->forks)
 		check = FAILURE;
-	ph->sem_monitor = sem_open(_SEM_MONITOR_, O_CREAT, __SEM_MODE__, 1);
-	if (SEM_FAILED == ph->sem_monitor)
+	singleton()->sem_print = sem_open(_SEM_PRINT_, O_CREAT, __SEM_MODE__, 1);
+	if (SEM_FAILED == singleton()->sem_print)
 		check = FAILURE;
 	if (FAILURE == check)
 		printf("%s%d: sem_open() error\n", __FILE__, __LINE__);
 	return (check);
 }
 
-void	__close_semaphores__(t_philosophers *ph)
+void	__close_semaphores__(void)
 {
-	sem_close(ph->sem_end);
-	sem_close(ph->forks);
-	sem_close(ph->sem_monitor);
+	sem_close(singleton()->forks);
+	sem_close(singleton()->sem_print);
+	sem_close(singleton()->__sem_glob);
 }
 
 void	__unlink_semaphores__(void)
 {
-	sem_unlink(_SEM_END_);
 	sem_unlink(_SEM_FORKS_);
-	sem_unlink(_SEM_MONITOR_);
+	sem_unlink(_SEM_PRINT_);
+	sem_unlink(_SEM_GLOB_);
 }

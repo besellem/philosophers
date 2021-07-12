@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 17:38:24 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/12 12:16:10 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/12 16:09:13 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,15 @@ const char	*g_status[] = {
 	[STAT_DIED] = B_RED "died" CLR_COLOR
 };
 
-void	print_status(t_philosophers *ph, int philo_id, int status)
+void	print_status(int philo_id, int status)
 {
-	const uint64_t	__ms = __current_time_ms__() - ph->start_time_ms;
+	const uint64_t	__ms = __current_time_ms__() - singleton()->start_time_ms;
 
-	if (ph->died != FALSE)
+	if (singleton()->died != FALSE)
 		return ;
-	if (everyone_got_his_meals(ph))
+	if (everyone_got_his_meals())
 		return ;
+	sem_wait(singleton()->sem_print);
 	printf("[%7" MS_FMT "] %3d %s\n", __ms, philo_id + 1, g_status[status]);
+	sem_post(singleton()->sem_print);
 }

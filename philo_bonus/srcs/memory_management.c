@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:54:43 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/12 12:07:01 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/12 15:31:48 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int	ft_free_all(int code)
 
 	if (singleton())
 	{
-		__close_semaphores__(singleton());
-		// __unlink_semaphores__();
+		__close_semaphores__();
+		__unlink_semaphores__();
 		if (singleton()->philos)
 		{
 			i = 0;
@@ -44,8 +44,7 @@ int	ft_free_all(int code)
 			{
 				printf(B_RED"    killing "CLR_COLOR"philo[%d] -> pid[%d] ...\n",
 					i, singleton()->philos[i].pid);
-				// kill(singleton()->philos[i].pid, SIGQUIT);
-				++i;
+				kill(singleton()->philos[i++].pid, SIGKILL);
 			}
 			ft_memdel((void **)&singleton()->philos);
 		}

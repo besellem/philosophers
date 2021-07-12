@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:21:25 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/12 12:09:24 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/12 16:09:06 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@
 # define UINT32_MAXLEN     11
 
 /* path names for sem_open() */
-# define _SEM_END_         "sem_end"
 # define _SEM_FORKS_       "sem_forks"
-# define _SEM_MONITOR_     "sem_monitor"
+# define _SEM_PRINT_       "sem_print"
+# define _SEM_GLOB_        "sem_global"
 
 /* used in struct s_philo `status' */
 # define STAT_THINKING     1
@@ -81,9 +81,9 @@
 
 # define CLR_COLOR  "\e[0m"
 
-# define LOG() printf(B_GREEN "%s:%d:" CLR_COLOR " Here\n", __FILE__, __LINE__);
+# define LOG()  printf(B_GREEN "%s:%d:" CLR_COLOR " Here\n", __FILE__, __LINE__);
 # define WARN() printf(B_PURPLE "%s:%d:" CLR_COLOR " Here\n", __FILE__, __LINE__);
-# define ERR() printf(B_RED "%s:%d:" CLR_COLOR " Here\n", __FILE__, __LINE__);
+# define ERR()  printf(B_RED "%s:%d:" CLR_COLOR " Here\n", __FILE__, __LINE__);
 
 /*
 ** -- DATA STRUCTURES --
@@ -107,9 +107,9 @@ typedef struct s_philosophers
 	uint64_t		start_time_ms;
 	t_philo			*philos;
 	pthread_t		monitor;
-	sem_t			*sem_end;
 	sem_t			*forks;
-	sem_t			*sem_monitor;
+	sem_t			*sem_print;
+	sem_t			*__sem_glob;
 }	t_philosophers;
 
 /*
@@ -125,8 +125,8 @@ int				ft_free_all(int code);
 
 /* Status */
 uint64_t		__current_time_ms__(void);
-void			__usleep__(t_philosophers *ph, int philo_id, int ms);
-void			print_status(t_philosophers *ph, int philo_id, int status);
+void			__usleep__(int philo_id, int ms);
+void			print_status(int philo_id, int status);
 
 /* General */
 void			print_usage(void);
@@ -134,17 +134,17 @@ int				dress_the_table(int ac, char **av, t_philosophers *ph);
 void			a_philo_life(t_philosophers *ph, int id);
 
 /* Philo borring life steps */
-void			step_eat(t_philosophers *ph, int philo_id);
-void			step_drop_forks(t_philosophers *ph);
-void			step_sleep(t_philosophers *ph, int philo_id);
+void			step_eat(int philo_id);
+void			step_drop_forks();
+void			step_sleep(int philo_id);
 
 /* Semaphore Utils */
-int				__open_semaphores__(t_philosophers *ph);
-void			__close_semaphores__(t_philosophers *ph);
+int				__open_semaphores__(void);
+void			__close_semaphores__(void);
 void			__unlink_semaphores__(void);
 
 /* Checks */
-int				everyone_got_his_meals(t_philosophers *ph);
-int				is_alive(t_philosophers *ph, int philo_id);
+int				everyone_got_his_meals(void);
+int				is_alive(int philo_id);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 15:42:34 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/12 11:26:06 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/12 14:54:19 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	dress_the_table(int ac, char **av, t_philosophers *ph)
 	if (FAILURE == init_philos(ph))
 		return (FAILURE);
 	__unlink_semaphores__();
-	if (FAILURE == __open_semaphores__(ph))
+	if (FAILURE == __open_semaphores__())
 		return (FAILURE);
 	ph->died = FALSE;
 	return (SUCCESS);

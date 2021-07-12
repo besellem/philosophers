@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:26:57 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/12 12:18:27 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/12 17:06:07 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,20 @@
 void	a_philo_life(t_philosophers *ph, int id)
 {
 	ph->philos[id].time2die = __current_time_ms__();
-	while (is_alive(ph, id) && !everyone_got_his_meals(ph))
-	// while (TRUE)
+	while (is_alive(id) && !everyone_got_his_meals())
 	{
-		// if (1 == ph->philo_nbr)
-		// {
-		// 	print_status(id, STAT_TAKEN_FORK);
-		// 	__usleep__(ph, id, ph->time2die);
-		// }
-		// else
-		// {
-			step_eat(ph, id);
-			step_drop_forks(ph);
-			step_sleep(ph, id);
-			print_status(ph, id, STAT_THINKING);
-		// }
+		if (1 == ph->philo_nbr)
+		{
+			print_status(id, STAT_TAKEN_FORK);
+			__usleep__(id, ph->time2die);
+		}
+		else
+		{
+			step_eat(id);
+			step_drop_forks();
+			step_sleep(id);
+			print_status(id, STAT_THINKING);
+		}
 	}
 }
 
@@ -45,38 +44,37 @@ static void	start_processes(t_philosophers *ph)
 			return ;
 		else if (0 == ph->philos[i].pid)
 		{
-			ph->start_time_ms = __current_time_ms__();
-			WARN()
-			__open_semaphores__(ph);
-			WARN()
+			// printf("pid[%d]: [%d]\n", i, ph->philos[i].pid);
+			__open_semaphores__();
 			a_philo_life(ph, i);
-			WARN()
-			__close_semaphores__(ph);
-			ft_free_all(SUCCESS);
+			__close_semaphores__();
+			// kill(ph->philos[i].pid, SIGKILL);
+			// ft_free_all(SUCCESS);
 		}
-		// else
-		// 	waitpid(ph->philos[i].pid, NULL, 0);
 		++i;
 	}
 }
 
 void	*monitoring(__attribute__((unused)) void *unused)
 {
-	ERR()
-	sem_wait(singleton()->sem_end);
-	ERR()
+	while (TRUE)
+	{
+		if (singleton()->died != FALSE)
+		{
+			
+		}
+		// sem_wait(singleton()->__sem_glob);
+	}
+	// ft_free_all(EXIT_SUCCESS);
 	return (NULL);
 }
 
 static void	start_the_meal(t_philosophers *ph)
 {
 	ph->start_time_ms = __current_time_ms__();
-	pthread_create(&ph->monitor, NULL, monitoring, NULL);
-	pthread_join(ph->monitor, NULL);
-	LOG()
 	start_processes(ph);
-	ERR()
-	ERR()
+	// pthread_create(&ph->monitor, NULL, monitoring, NULL);
+	sem_wait(ph->__sem_glob);
 }
 
 int	main(int ac, char **av)

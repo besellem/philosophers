@@ -6,16 +6,16 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 17:45:31 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/12 12:15:48 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/12 17:05:35 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	everyone_got_his_meals(t_philosophers *ph)
+int	everyone_got_his_meals(void)
 {
-	const int	philo_nbr = ph->philo_nbr;
-	const int	to_eat = ph->nbr2eat;
+	const int	philo_nbr = singleton()->philo_nbr;
+	const int	to_eat = singleton()->nbr2eat;
 	int			count;
 	int			i;
 
@@ -25,26 +25,28 @@ int	everyone_got_his_meals(t_philosophers *ph)
 	i = 0;
 	while (i < philo_nbr)
 	{
-		if (ph->philos[i++].nbr_eaten >= to_eat)
+		if (singleton()->philos[i++].nbr_eaten >= to_eat)
 			++count;
 	}
 	return (count == philo_nbr);
 }
 
-int	is_alive(t_philosophers *ph, int philo_id)
+int	is_alive(int philo_id)
 {
 	uint64_t	isdead;
 
-	if (ph->died)
+	if (singleton()->died)
 		return (FALSE);
-	if (ph->philos[philo_id].time2die != 0)
+	if (singleton()->philos[philo_id].time2die != 0)
 	{
-		isdead = __current_time_ms__() - ph->philos[philo_id].time2die;
-		if (isdead > (uint64_t)ph->time2die)
+		isdead = __current_time_ms__() - singleton()->philos[philo_id].time2die;
+		if (isdead > (uint64_t)singleton()->time2die)
 		{
-			print_status(ph, philo_id, STAT_DIED);
-			ph->died = philo_id + 1;
-			sem_post(ph->sem_end);
+			sem_post(singleton()->__sem_glob);
+			print_status(philo_id, STAT_DIED);
+			// usleep(1000);
+			sem_wait(singleton()->sem_print);
+			singleton()->died = philo_id + 1;
 			return (FALSE);
 		}
 	}
