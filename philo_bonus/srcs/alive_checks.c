@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 17:45:31 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/12 17:05:35 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/13 13:00:12 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,21 @@ int	is_alive(int philo_id)
 		{
 			sem_post(singleton()->__sem_glob);
 			print_status(philo_id, STAT_DIED);
-			// usleep(1000);
 			sem_wait(singleton()->sem_print);
 			singleton()->died = philo_id + 1;
 			return (FALSE);
 		}
 	}
+
+	// printf(B_RED "GOT THEIR MEALS: %d" CLR_COLOR "\n", everyone_got_his_meals());
+
+	// if (everyone_got_his_meals())
+	// {
+	// 	sem_post(singleton()->__sem_glob);
+	// 	sem_wait(singleton()->sem_print);
+	// 	singleton()->died = philo_id + 1;
+	// 	return (FALSE);
+	// }
+
 	return (TRUE);
 }

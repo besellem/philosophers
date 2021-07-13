@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:21:25 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/12 16:09:06 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/13 18:48:02 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@
 /* path names for sem_open() */
 # define _SEM_FORKS_       "sem_forks"
 # define _SEM_PRINT_       "sem_print"
+# define _SEM_MEAL_        "sem_meal"
 # define _SEM_GLOB_        "sem_global"
 
 /* used in struct s_philo `status' */
@@ -109,6 +110,7 @@ typedef struct s_philosophers
 	pthread_t		monitor;
 	sem_t			*forks;
 	sem_t			*sem_print;
+	sem_t			*sem_meal;
 	sem_t			*__sem_glob;
 }	t_philosophers;
 

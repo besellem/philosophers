@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:26:57 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/12 17:06:07 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/13 18:50:38 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,18 @@ static void	start_processes(t_philosophers *ph)
 
 void	*monitoring(__attribute__((unused)) void *unused)
 {
-	while (TRUE)
+	int	i;
+
+	if (0 == singleton()->nbr2eat)
+		return (NULL);
+	i = 0;
+	while (i < singleton()->philo_nbr)
 	{
-		if (singleton()->died != FALSE)
-		{
-			
-		}
-		// sem_wait(singleton()->__sem_glob);
+		sem_wait(singleton()->sem_meal);
+		WARN()
+		++i;
 	}
-	// ft_free_all(EXIT_SUCCESS);
+	ft_free_all(EXIT_SUCCESS);
 	return (NULL);
 }
 
@@ -73,7 +76,7 @@ static void	start_the_meal(t_philosophers *ph)
 {
 	ph->start_time_ms = __current_time_ms__();
 	start_processes(ph);
-	// pthread_create(&ph->monitor, NULL, monitoring, NULL);
+	pthread_create(&ph->monitor, NULL, monitoring, NULL);
 	sem_wait(ph->__sem_glob);
 }
 

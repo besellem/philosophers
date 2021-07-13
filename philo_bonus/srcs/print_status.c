@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 17:38:24 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/12 16:09:13 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/13 18:51:26 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ void	print_status(int philo_id, int status)
 	if (everyone_got_his_meals())
 		return ;
 	sem_wait(singleton()->sem_print);
-	printf("[%7" MS_FMT "] %3d %s\n", __ms, philo_id + 1, g_status[status]);
+	if (STAT_EATING == status)
+		printf("[%7" MS_FMT "] %3d %s for the %d time\n", __ms, philo_id + 1, g_status[status], singleton()->philos[philo_id].nbr_eaten + 1);
+	else
+		printf("[%7" MS_FMT "] %3d %s\n", __ms, philo_id + 1, g_status[status]);
 	sem_post(singleton()->sem_print);
 }
