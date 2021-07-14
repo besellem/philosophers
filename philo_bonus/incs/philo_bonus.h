@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:21:25 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/14 14:39:01 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/14 14:47:25 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdio.h>    /* printf */
 # include <stdlib.h>   /* malloc, free, exit */
 # include <unistd.h>   /* write, fork, usleep */
+# include <fcntl.h>    /* (O_CREATE flag) */
 # include <signal.h>   /* kill */
 # include <sys/time.h> /* gettimeofday */
 # include <sys/wait.h> /* waitpid */
