@@ -6,43 +6,13 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 09:51:42 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/13 18:47:50 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/14 14:31:16 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
 #define __SEM_MODE__ 0644
-
-// struct s_sem_open
-// {
-// 	char			*name;
-// 	int				value;
-// 	sem_t			*ptr;
-// };
-
-// int	__open_semaphores__(t_philosophers *ph)
-// {
-// 	struct s_sem_open	table[] = {
-// 		{_SEM_FORKS_, ph->philo_nbr, ph->forks},
-// 		{_SEM_MONITOR_, 1, ph->sem_monitor},
-// 		{NULL, 0, NULL}
-// 	};
-// 	size_t				i;
-
-// 	i = 0;
-// 	while (table[i].name)
-// 	{
-// 		table[i].ptr = sem_open(table[i].name, O_CREAT, 0644, table[i].value);
-// 		if (SEM_FAILED == table[i].ptr)
-// 		{
-// 			printf("%s%d: sem_open() error\n", __FILE__, __LINE__);
-// 			return (FAILURE);
-// 		}
-// 		++i;
-// 	}
-// 	return (SUCCESS);
-// }
 
 int	__open_semaphores__(void)
 {

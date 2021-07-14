@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:21:25 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/13 18:48:02 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/14 14:39:01 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,6 @@
 
 # define CLR_COLOR  "\e[0m"
 
-# define LOG()  printf(B_GREEN "%s:%d:" CLR_COLOR " Here\n", __FILE__, __LINE__);
-# define WARN() printf(B_PURPLE "%s:%d:" CLR_COLOR " Here\n", __FILE__, __LINE__);
-# define ERR()  printf(B_RED "%s:%d:" CLR_COLOR " Here\n", __FILE__, __LINE__);
-
 /*
 ** -- DATA STRUCTURES --
 */
@@ -137,7 +133,7 @@ void			a_philo_life(t_philosophers *ph, int id);
 
 /* Philo borring life steps */
 void			step_eat(int philo_id);
-void			step_drop_forks();
+void			step_drop_forks(void);
 void			step_sleep(int philo_id);
 
 /* Semaphore Utils */
