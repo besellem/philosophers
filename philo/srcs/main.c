@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:26:57 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/08 17:56:50 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/15 16:10:20 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static void	*a_philo_life(void *content)
 			step_drop_forks(id);
 			step_sleep(id);
 			print_status(id, STAT_THINKING);
+			__usleep__(id, singleton()->time2eat - singleton()->time2sleep);
 		}
 	}
 	return (NULL);

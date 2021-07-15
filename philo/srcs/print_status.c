@@ -6,12 +6,13 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 17:38:24 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/11 15:01:17 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/15 16:35:48 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/* uint64_t is a different type depending on the system */
 #if defined(__APPLE__) && defined(__MACH__)
 # define MS_FMT "llu"
 #else
@@ -28,8 +29,6 @@ const char	*g_status[] = {
 
 void	print_status(int philo_id, int status)
 {
-	const uint64_t	__ms = __current_time_ms__() - singleton()->start_time_ms;
-
 	pthread_mutex_lock(&singleton()->__monitor);
 	if (singleton()->died != FALSE)
 	{
@@ -40,6 +39,9 @@ void	print_status(int philo_id, int status)
 	if (everyone_got_his_meals())
 		return ;
 	pthread_mutex_lock(&singleton()->__monitor);
-	printf("[%7" MS_FMT "] %3d %s\n", __ms, philo_id + 1, g_status[status]);
+	printf("[%7" MS_FMT "] %3d %s\n",
+		__current_time_ms__() - singleton()->start_time_ms,
+		philo_id + 1,
+		g_status[status]);
 	pthread_mutex_unlock(&singleton()->__monitor);
 }

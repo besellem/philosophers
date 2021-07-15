@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/25 00:26:57 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/14 14:38:33 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/15 16:43:57 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	a_philo_life(t_philosophers *ph, int id)
 			step_drop_forks();
 			step_sleep(id);
 			print_status(id, STAT_THINKING);
+			__usleep__(id, singleton()->time2eat - singleton()->time2sleep);
 		}
 	}
 	sem_post(singleton()->sem_print);
@@ -37,7 +38,7 @@ void	a_philo_life(t_philosophers *ph, int id)
 	while (++i < singleton()->philo_nbr)
 		sem_post(singleton()->sem_meal);
 	sem_wait(singleton()->sem_print);
-	exit(EXIT_SUCCESS);
+	// exit(EXIT_SUCCESS);
 }
 
 static void	start_processes(t_philosophers *ph)
@@ -82,7 +83,7 @@ static void	start_the_meal(t_philosophers *ph)
 	ph->start_time_ms = __current_time_ms__();
 	start_processes(ph);
 	pthread_create(&ph->monitor, NULL, monitoring, NULL);
-	pthread_join(ph->monitor, NULL);
+	// pthread_join(ph->monitor, NULL);
 	sem_wait(ph->__sem_glob);
 }
 
