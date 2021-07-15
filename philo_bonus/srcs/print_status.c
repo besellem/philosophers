@@ -6,7 +6,7 @@
 /*   By: besellem <besellem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 17:38:24 by besellem          #+#    #+#             */
-/*   Updated: 2021/07/15 16:26:02 by besellem         ###   ########.fr       */
+/*   Updated: 2021/07/15 17:37:25 by besellem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ void	print_status(int philo_id, int status)
 		__current_time_ms__() - singleton()->start_time_ms,
 		philo_id + 1,
 		g_status[status]);
-	sem_post(singleton()->sem_print);
+	if (STAT_DIED != status)
+		sem_post(singleton()->sem_print);
 }
